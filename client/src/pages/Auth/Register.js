@@ -1,68 +1,60 @@
-
-import React,{ useState } from 'react'
+import React,{useState} from 'react'
 import Layout from '../../components/Layout/Layout'
+import toast from 'react-hot-toast';
 import {useNavigate} from 'react-router-dom'
-import { toast } from 'react-toastify'
 import axios from 'axios'
 
-
-
 const Register = () => {
-    const[name,setName]=useState('');
-const [email,setEmail] = useState('');
-const [password,setPassword] = useState('');
-const [phone,setPhone] = useState('');
+  const[name,setName]=useState('');
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [phone,setPhone] = useState('');
+  const navigate=useNavigate();
 
-const handleSubmit=async (e)=>{
+  const handleSubmit=async (e) =>{
     e.preventDefault();
     try {
-      const res=await axios.post(
-        "/api/v1/auth/register",{name,email,password,phone}
-  
-      );
-      if(res &&res.data.success){
-        toast.success(res.data.message);
-        navigate('/login');
-      }
-      else{
-        toast.error(res.data.message);
-      }
-      
+        const res=await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/register`,{name,email,password,phone});
+        if(res && res.data.success){
+            toast.success(res.data.message);
+            navigate('/login')
+        }
+        else{
+            toast.error(res.data.message);
+        }
     } catch (error) {
-      console.log(error)
-      toast.error('Something went wrong')
-      
+        console.log(error)
+        toast.error('something went wrong')
     }
-  };
+  }
+
+
   return (
-    <Layout title ="Resgister page">
-       <div className="register">
-       <h1>Register page</h1>
-       <form onSubmit={handleSubmit}>
+    <Layout title={'Register Now!'}>
+        <div className='register'>
+            <h1>Register Now!</h1>
+            <form onSubmit={handleSubmit}>
   <div className="mb-3">
-    <input type="text" value={name} onChange={(e)=>setName(e.target.value)} className="form-control" id="exampleInputName" placeholder='Enter your name' required/>
+    <input type="text" value={name} onChange={(e)=> setName(e.target.value)}className="form-control" id="exampleInputName" placeholder='Enter Your Name'required  />
   </div>
   <div className="mb-3">
     
-    <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" placeholder='Enter your email' required />
+    <input type="email" value={email} onChange={(e)=> setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" placeholder='Enter Your Email' required/>
   </div>
   <div className="mb-3">
-   
-    <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder='Enter your password' required/>
+    <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder='Enter Password' required />
   </div>
   <div className="mb-3">
-    
-    <input type="text" value={phone} onChange={(e)=>setPhone(e.target.value)} className="form-control" id="exampleInputPhone" placeholder='Enter your Number' required/>
+    <input type="text" value={phone} onChange={(e)=> setPhone(e.target.value)} className="form-control" id="exampleInputNumber" placeholder='Enter Your Number' required/>
   </div>
-  
-  <button type="submit" className="btn btn-primary">Register</button>
+  <button type="submit"  className="btn btn-primary">Register</button>
 </form>
 
-
-       </div>
+        </div>
+        
       
     </Layout>
-  )
-}
+  );
+};
 
-export default Register
+export default Register; 
